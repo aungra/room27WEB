@@ -271,9 +271,23 @@ const mobileRingTargetAngle = -55;
 let activeRingSectionId = "";
 let mobileRingRotation = 0;
 let mobileRingRafId = null;
+let isMobileRingDragging = false;
+let dragStartAngle = 0;
+let dragStartRotation = 0;
+let selectedRingSectionId = "";
 
 function normalizeForwardDegrees(value) {
   return ((value % 360) + 360) % 360;
+}
+
+function normalizeSignedDegrees(value) {
+  return ((value + 180) % 360 + 360) % 360 - 180;
+}
+
+function setRingActiveText(activeId) {
+  ringTexts.forEach((text) => {
+    text.classList.toggle("is-active", text.dataset.section === activeId);
+  });
 }
 
 function getMobileRingTargetRotation() {
@@ -322,12 +336,45 @@ function requestMobileRingAnimation() {
     clearMobileRingTransform();
     return;
   }
+  if (isMobileRingDragging) return;
   if (mobileRingRafId === null) {
     mobileRingRafId = requestAnimationFrame(tickMobileRing);
   }
 }
 
+function getRingPointerAngle(event) {
+  if (!cursorRing) return 0;
+  const rect = cursorRing.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  return Math.atan2(event.clientY - centerY, event.clientX - centerX) * 180 / Math.PI;
+}
+
+function getNearestRingSectionId(rotation) {
+  let nearestId = activeRingSectionId;
+  let nearestDistance = Infinity;
+
+  for (const [sectionId, baseAngle] of Object.entries(ringSectionAngles)) {
+    const distance = Math.abs(normalizeSignedDegrees(baseAngle + rotation - mobileRingTargetAngle));
+    if (distance < nearestDistance) {
+      nearestDistance = distance;
+      nearestId = sectionId;
+    }
+  }
+
+  return nearestId;
+}
+
+function updateDraggedRingSelection() {
+  selectedRingSectionId = getNearestRingSectionId(mobileRingRotation);
+  setRingActiveText(selectedRingSectionId);
+}
+
 function updateRingActiveSection() {
+  if (isMobileRingDragging) {
+    return selectedRingSectionId;
+  }
+
   const bandTop = window.innerHeight * 0.35;
   const bandBottom = window.innerHeight * 0.65;
   const bandCenter = (bandTop + bandBottom) / 2;
@@ -347,9 +394,7 @@ function updateRingActiveSection() {
     }
   }
 
-  ringTexts.forEach((text) => {
-    text.classList.toggle("is-active", text.dataset.section === activeId);
-  });
+  setRingActiveText(activeId);
 
   if (activeRingSectionId !== activeId) {
     activeRingSectionId = activeId;
@@ -357,6 +402,51 @@ function updateRingActiveSection() {
   }
 
   return activeId;
+}
+
+function startMobileRingDrag(event) {
+  if (!mobileRingQuery.matches || !ringTextGroup) return;
+  if (!document.body.classList.contains("mobile-cursor-visible")) return;
+  if (document.body.classList.contains("nav-open") ||
+    document.body.classList.contains("splash-on") ||
+    document.body.classList.contains("lightbox-open")) return;
+
+  event.preventDefault();
+  isMobileRingDragging = true;
+  dragStartAngle = getRingPointerAngle(event);
+  dragStartRotation = mobileRingRotation;
+  selectedRingSectionId = activeRingSectionId || getNearestRingSectionId(mobileRingRotation);
+  stopMobileRingAnimation();
+  document.body.classList.add("mobile-ring-dragging");
+  cursorRing.setPointerCapture?.(event.pointerId);
+  updateDraggedRingSelection();
+}
+
+function moveMobileRingDrag(event) {
+  if (!isMobileRingDragging || !ringTextGroup) return;
+
+  event.preventDefault();
+  const angleDelta = normalizeSignedDegrees(getRingPointerAngle(event) - dragStartAngle);
+  mobileRingRotation = dragStartRotation + angleDelta;
+  ringTextGroup.style.transform = `rotate(${mobileRingRotation}deg)`;
+  updateDraggedRingSelection();
+}
+
+function finishMobileRingDrag(event) {
+  if (!isMobileRingDragging) return;
+
+  event.preventDefault();
+  isMobileRingDragging = false;
+  document.body.classList.remove("mobile-ring-dragging");
+  cursorRing?.releasePointerCapture?.(event.pointerId);
+
+  const targetSection = document.getElementById(selectedRingSectionId);
+  if (targetSection) {
+    activeRingSectionId = selectedRingSectionId;
+    targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  requestMobileRingAnimation();
 }
 
 if (ringTexts.length) {
@@ -379,6 +469,16 @@ if (ringTexts.length) {
     }
   });
   requestMobileRingAnimation();
+}
+
+if (cursorRing && ringTextGroup) {
+  cursorRing.addEventListener("pointerdown", startMobileRingDrag);
+  cursorRing.addEventListener("pointermove", moveMobileRingDrag);
+  cursorRing.addEventListener("pointerup", finishMobileRingDrag);
+  cursorRing.addEventListener("pointercancel", finishMobileRingDrag);
+  cursorRing.addEventListener("lostpointercapture", finishMobileRingDrag);
+  window.addEventListener("pointerup", finishMobileRingDrag);
+  window.addEventListener("pointercancel", finishMobileRingDrag);
 }
 
 const fadeElements = document.querySelectorAll(".fade-up");
