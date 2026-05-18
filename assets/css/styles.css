@@ -91,15 +91,15 @@ select {
   width: 100%;
   height: 100%;
   overflow: visible;
-  transform: scale(1.4);
+  transform: scale(1.2);
   transform-origin: center;
   transition: transform 1.18s cubic-bezier(.22, 1, .36, 1);
 }
 
 #cur-ring .ring-text {
-  animation: cursor-ring-spin 18s linear infinite;
+  animation: cursor-ring-spin 26s linear infinite;
   transform-box: view-box;
-  transform-origin: 129.59px 129.67px;
+  transform-origin: 269.3px 269.44px;
 }
 
 @keyframes cursor-ring-spin {
@@ -117,7 +117,7 @@ select {
   fill: #a7a7a7;
   font-family: Helvetica, "helvetica-lt-pro", "yu-gothic-pr6n", "Yu Gothic", "游ゴシック体", YuGothic, sans-serif;
   font-weight: 400;
-  font-size: 22px;
+  font-size: 47px;
   transition: fill .3s ease;
 }
 
@@ -131,15 +131,17 @@ body.has-cursor.cursor-ready #cur-ring { opacity: 1; }
 body.has-cursor,
 body.has-cursor * { cursor: none !important; }
 
-body.cursor-hover #cur-ring svg { transform: scale(.7); }
+body.cursor-hover #cur-ring svg { transform: scale(.6); }
 
 body.cursor-hover #cur-ring .cursor-ring-bg { fill-opacity: .80; }
 
+body.cursor-map #cur,
 body.cursor-map #cur-ring {
   opacity: 0 !important;
   visibility: hidden;
 }
 
+body:has(.map-box:hover) #cur,
 body:has(.map-box:hover) #cur-ring {
   opacity: 0 !important;
   visibility: hidden;
@@ -1178,7 +1180,7 @@ address {
   #cur-ring .ring-text {
     animation: none;
     transform-box: view-box;
-    transform-origin: 129.59px 129.67px;
+    transform-origin: 269.3px 269.44px;
   }
 
   body.has-cursor,

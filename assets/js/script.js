@@ -262,10 +262,10 @@ mobileRingQuery.addEventListener("change", updateMobileCursorVisibility);
 const ringSectionAngles = {
   plan: -25,
   gallery: 32,
-  rental: 93,
-  access: 160,
-  faq: -150,
-  contact: -92,
+  rental: 96,
+  access: 157,
+  faq: -148,
+  contact: -87,
 };
 const mobileRingTargetAngle = -55;
 let activeRingSectionId = "";
