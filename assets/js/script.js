@@ -62,11 +62,11 @@ window.addEventListener("resize", () => {
 
 const cursorDot = document.querySelector("#cur");
 const cursorRing = document.querySelector("#cur-ring");
-const desktopCursorQuery = window.matchMedia("(min-width: 768px)");
+const desktopCursorQuery = window.matchMedia("(max-width: 0px)");
 const mapBox = document.querySelector(".map-box");
 const mapFrame = document.querySelector(".map-box iframe");
 
-if (cursorDot && cursorRing) {
+if (cursorDot && cursorRing && desktopCursorQuery.matches) {
   let targetX = window.innerWidth / 2;
   let targetY = window.innerHeight / 2;
   let ringX = targetX;
@@ -254,7 +254,7 @@ const ringTextGroup = document.querySelector("#cur-ring .ring-text");
 const trackedSections = ringTexts
   .map((text) => document.getElementById(text.dataset.section))
   .filter(Boolean);
-const mobileRingQuery = window.matchMedia("(max-width: 767px)");
+const mobileRingQuery = window.matchMedia("(min-width: 0px)");
 updateMobileCursorVisibility();
 window.addEventListener("scroll", updateMobileCursorVisibility, { passive: true });
 window.addEventListener("resize", updateMobileCursorVisibility);

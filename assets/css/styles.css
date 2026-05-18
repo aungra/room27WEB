@@ -59,45 +59,44 @@ select {
   font-weight: 400;
 }
 
-#cur,
+#cur {
+  display: none;
+}
+
 #cur-ring {
   position: fixed;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate3d(-50%, -50%, 0);
-  transition: opacity .72s ease;
-  will-change: transform, opacity;
-}
-
-#cur {
-  z-index: 101;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #211714;
-}
-
-#cur-ring {
+  left: auto;
+  top: auto;
+  right: -60px;
+  bottom: -60px;
   z-index: 100;
-  width: 110px;
-  height: 110px;
+  width: 170px;
+  height: 170px;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: circle(50% at 50% 50%);
+  transform: translate3d(0, 120%, 0);
+  transition: opacity .72s ease, transform 1.18s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, opacity;
 }
 
 #cur-ring svg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  top: 0;
+  right: auto;
+  bottom: auto;
+  width: 170px;
+  height: 170px;
   overflow: visible;
-  transform: scale(1.2);
+  transform: none;
   transform-origin: center;
   transition: transform 1.18s cubic-bezier(.22, 1, .36, 1);
 }
 
 #cur-ring .ring-text {
-  animation: cursor-ring-spin 26s linear infinite;
+  animation: none;
   transform-box: view-box;
   transform-origin: 269.3px 269.44px;
 }
@@ -125,26 +124,19 @@ select {
   fill: #211714;
 }
 
-body.has-cursor.cursor-ready #cur,
-body.has-cursor.cursor-ready #cur-ring { opacity: 1; }
-
-body.has-cursor,
-body.has-cursor * { cursor: none !important; }
+body.cursor-ready.mobile-cursor-visible:not(.lightbox-open):not(.nav-open):not(.splash-on) #cur-ring {
+  opacity: 1;
+  pointer-events: auto;
+  touch-action: none;
+  transform: translate3d(0, 0, 0);
+}
 
 body.cursor-hover #cur-ring svg { transform: scale(.6); }
 
 body.cursor-hover #cur-ring .cursor-ring-bg { fill-opacity: .80; }
 
-body.cursor-map #cur,
-body.cursor-map #cur-ring {
-  opacity: 0 !important;
-  visibility: hidden;
-}
-
-body:has(.map-box:hover) #cur,
-body:has(.map-box:hover) #cur-ring {
-  opacity: 0 !important;
-  visibility: hidden;
+body.mobile-ring-dragging #cur-ring .cursor-ring-bg {
+  fill-opacity: 1;
 }
 
 body.lightbox-open #cur,
@@ -1147,49 +1139,6 @@ address {
 }
 
 @media (max-width: 767px) {
-  #cur { display: none; }
-
-  #cur-ring {
-    left: auto;
-    top: auto;
-    right: -60px;
-    bottom: -60px;
-    width: 170px;
-    height: 170px;
-    display: block;
-    opacity: 0;
-    clip-path: circle(50% at 50% 50%);
-    transform: translate3d(0, 120%, 0);
-    transition: opacity .72s ease, transform 1.18s cubic-bezier(.22, 1, .36, 1);
-  }
-
-  body.cursor-ready.mobile-cursor-visible:not(.lightbox-open):not(.nav-open):not(.splash-on) #cur-ring {
-    opacity: 1;
-    pointer-events: auto;
-    touch-action: none;
-    transform: translate3d(0, 0, 0);
-  }
-
-  body.mobile-ring-dragging #cur-ring .cursor-ring-bg {
-    fill-opacity: 1;
-  }
-
-  #cur-ring svg {
-    left: 0;
-    top: 0;
-    right: auto;
-    bottom: auto;
-    width: 170px;
-    height: 170px;
-    transform: none;
-  }
-
-  #cur-ring .ring-text {
-    animation: none;
-    transform-box: view-box;
-    transform-origin: 269.3px 269.44px;
-  }
-
   body.has-cursor,
   body.has-cursor * { cursor: auto !important; }
 
