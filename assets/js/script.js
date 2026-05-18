@@ -256,8 +256,9 @@ function updateMobileCursorVisibility() {
 
 const ringTexts = Array.from(document.querySelectorAll("#cur-ring text[data-section]"));
 const ringTextGroup = document.querySelector("#cur-ring .ring-text");
-const trackedSections = ringTexts
-  .map((text) => document.getElementById(text.dataset.section))
+const trackedSectionIds = Array.from(new Set(ringTexts.map((text) => text.dataset.section)));
+const trackedSections = trackedSectionIds
+  .map((sectionId) => document.getElementById(sectionId))
   .filter(Boolean);
 const mobileRingQuery = window.matchMedia("(min-width: 0px)");
 updateMobileCursorVisibility();
@@ -272,14 +273,38 @@ const ringSectionAngles = {
   faq: -148,
   contact: -87,
 };
+const ringSectionOrder = ["plan", "gallery", "rental", "access", "faq", "contact"];
 const mobileRingTargetAngle = -55;
+const ringDragDistanceThreshold = 12;
+const ringDragAngleThreshold = 8;
+const ringEdgeResistance = 0.25;
+const ringEdgeOvershoot = 32;
+const ringScrollUnlockDelay = 180;
+const ringSectionRotations = ringSectionOrder.reduce((rotations, sectionId, index) => {
+  let sectionRotation = mobileRingTargetAngle - ringSectionAngles[sectionId];
+  if (index > 0) {
+    const previousRotation = rotations[ringSectionOrder[index - 1]];
+    while (sectionRotation > previousRotation) {
+      sectionRotation -= 360;
+    }
+  }
+  rotations[sectionId] = sectionRotation;
+  return rotations;
+}, {});
+const minRingRotation = ringSectionRotations[ringSectionOrder[ringSectionOrder.length - 1]];
+const maxRingRotation = ringSectionRotations[ringSectionOrder[0]];
 let activeRingSectionId = "";
 let mobileRingRotation = 0;
 let mobileRingRafId = null;
 let isMobileRingDragging = false;
 let dragStartAngle = 0;
 let dragStartRotation = 0;
+let dragStartX = 0;
+let dragStartY = 0;
+let hasRingDragMoved = false;
 let selectedRingSectionId = "";
+let isRingScrollLocked = false;
+let ringScrollLockTimer = null;
 
 function normalizeForwardDegrees(value) {
   return ((value % 360) + 360) % 360;
@@ -289,6 +314,20 @@ function normalizeSignedDegrees(value) {
   return ((value + 180) % 360 + 360) % 360 - 180;
 }
 
+function clampRingRotation(rotation) {
+  return Math.min(Math.max(rotation, minRingRotation), maxRingRotation);
+}
+
+function applyRingEdgeResistance(rotation) {
+  if (rotation > maxRingRotation) {
+    return Math.min(maxRingRotation + (rotation - maxRingRotation) * ringEdgeResistance, maxRingRotation + ringEdgeOvershoot);
+  }
+  if (rotation < minRingRotation) {
+    return Math.max(minRingRotation + (rotation - minRingRotation) * ringEdgeResistance, minRingRotation - ringEdgeOvershoot);
+  }
+  return rotation;
+}
+
 function setRingActiveText(activeId) {
   ringTexts.forEach((text) => {
     text.classList.toggle("is-active", text.dataset.section === activeId);
@@ -296,9 +335,8 @@ function setRingActiveText(activeId) {
 }
 
 function getMobileRingTargetRotation() {
-  const baseAngle = ringSectionAngles[activeRingSectionId];
-  if (typeof baseAngle !== "number") return mobileRingRotation;
-  return mobileRingRotation + normalizeForwardDegrees((mobileRingTargetAngle - baseAngle) - mobileRingRotation);
+  const targetRotation = ringSectionRotations[activeRingSectionId];
+  return typeof targetRotation === "number" ? targetRotation : mobileRingRotation;
 }
 
 function stopMobileRingAnimation() {
@@ -322,11 +360,11 @@ function tickMobileRing() {
   }
 
   const targetRotation = getMobileRingTargetRotation();
-  const targetDelta = normalizeForwardDegrees(targetRotation - mobileRingRotation);
+  const targetDelta = targetRotation - mobileRingRotation;
   mobileRingRotation += targetDelta * 0.18;
   ringTextGroup.style.transform = `rotate(${mobileRingRotation}deg)`;
 
-  if (targetDelta < 0.5) {
+  if (Math.abs(targetDelta) < 0.5) {
     mobileRingRotation = targetRotation;
     ringTextGroup.style.transform = `rotate(${mobileRingRotation}deg)`;
     mobileRingRafId = null;
@@ -358,9 +396,27 @@ function getRingPointerAngle(event) {
 function getNearestRingSectionId(rotation) {
   let nearestId = activeRingSectionId;
   let nearestDistance = Infinity;
+  const clampedRotation = clampRingRotation(rotation);
+
+  for (const [sectionId, sectionRotation] of Object.entries(ringSectionRotations)) {
+    const distance = Math.abs(clampedRotation - sectionRotation);
+    if (distance < nearestDistance) {
+      nearestDistance = distance;
+      nearestId = sectionId;
+    }
+  }
+
+  return nearestId;
+}
+
+function getRingSectionIdFromPointer(event) {
+  const pointerAngle = getRingPointerAngle(event);
+  let nearestId = activeRingSectionId;
+  let nearestDistance = Infinity;
 
   for (const [sectionId, baseAngle] of Object.entries(ringSectionAngles)) {
-    const distance = Math.abs(normalizeSignedDegrees(baseAngle + rotation - mobileRingTargetAngle));
+    const visibleAngle = baseAngle + mobileRingRotation;
+    const distance = Math.abs(normalizeSignedDegrees(visibleAngle - pointerAngle));
     if (distance < nearestDistance) {
       nearestDistance = distance;
       nearestId = sectionId;
@@ -375,9 +431,40 @@ function updateDraggedRingSelection() {
   setRingActiveText(selectedRingSectionId);
 }
 
+function unlockRingScroll() {
+  isRingScrollLocked = false;
+  ringScrollLockTimer = null;
+  updateRingActiveSection();
+}
+
+function scheduleRingScrollUnlock() {
+  clearTimeout(ringScrollLockTimer);
+  ringScrollLockTimer = setTimeout(unlockRingScroll, ringScrollUnlockDelay);
+}
+
+function lockRingScroll() {
+  isRingScrollLocked = true;
+  scheduleRingScrollUnlock();
+}
+
+function navigateToRingSection(sectionId) {
+  const targetSection = document.getElementById(sectionId);
+  if (!targetSection) return;
+
+  selectedRingSectionId = sectionId;
+  activeRingSectionId = sectionId;
+  setRingActiveText(sectionId);
+  lockRingScroll();
+  targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  requestMobileRingAnimation();
+}
+
 function updateRingActiveSection() {
   if (isMobileRingDragging) {
     return selectedRingSectionId;
+  }
+  if (isRingScrollLocked) {
+    return activeRingSectionId;
   }
 
   const bandTop = window.innerHeight * 0.35;
@@ -411,6 +498,7 @@ function updateRingActiveSection() {
 
 function startMobileRingDrag(event) {
   if (!mobileRingQuery.matches || !ringTextGroup) return;
+  if (isRingScrollLocked) return;
   if (!document.body.classList.contains("mobile-cursor-visible")) return;
   if (document.body.classList.contains("nav-open") ||
     document.body.classList.contains("splash-on") ||
@@ -420,6 +508,9 @@ function startMobileRingDrag(event) {
   isMobileRingDragging = true;
   dragStartAngle = getRingPointerAngle(event);
   dragStartRotation = mobileRingRotation;
+  dragStartX = event.clientX;
+  dragStartY = event.clientY;
+  hasRingDragMoved = false;
   selectedRingSectionId = activeRingSectionId || getNearestRingSectionId(mobileRingRotation);
   stopMobileRingAnimation();
   document.body.classList.add("mobile-ring-dragging");
@@ -431,8 +522,12 @@ function moveMobileRingDrag(event) {
   if (!isMobileRingDragging || !ringTextGroup) return;
 
   event.preventDefault();
+  const moveDistance = Math.hypot(event.clientX - dragStartX, event.clientY - dragStartY);
   const angleDelta = normalizeSignedDegrees(getRingPointerAngle(event) - dragStartAngle);
-  mobileRingRotation = dragStartRotation + angleDelta;
+  if (moveDistance >= ringDragDistanceThreshold || Math.abs(angleDelta) >= ringDragAngleThreshold) {
+    hasRingDragMoved = true;
+  }
+  mobileRingRotation = applyRingEdgeResistance(dragStartRotation + angleDelta);
   ringTextGroup.style.transform = `rotate(${mobileRingRotation}deg)`;
   updateDraggedRingSelection();
 }
@@ -445,18 +540,24 @@ function finishMobileRingDrag(event) {
   document.body.classList.remove("mobile-ring-dragging");
   cursorRing?.releasePointerCapture?.(event.pointerId);
 
-  const targetSection = document.getElementById(selectedRingSectionId);
-  if (targetSection) {
-    activeRingSectionId = selectedRingSectionId;
-    targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (!hasRingDragMoved) {
+    selectedRingSectionId = event.target?.closest?.("[data-section]")?.dataset.section ||
+      getRingSectionIdFromPointer(event);
+  } else {
+    selectedRingSectionId = getNearestRingSectionId(mobileRingRotation);
   }
-
-  requestMobileRingAnimation();
+  navigateToRingSection(selectedRingSectionId);
 }
 
 if (ringTexts.length) {
   updateRingActiveSection();
-  window.addEventListener("scroll", updateRingActiveSection, { passive: true });
+  window.addEventListener("scroll", () => {
+    if (isRingScrollLocked) {
+      scheduleRingScrollUnlock();
+      return;
+    }
+    updateRingActiveSection();
+  }, { passive: true });
   window.addEventListener("resize", () => {
     if (mobileRingQuery.matches) {
       updateRingActiveSection();

@@ -75,6 +75,7 @@ select {
   display: block;
   opacity: 0;
   pointer-events: none;
+  cursor: grab;
   clip-path: circle(50% at 50% 50%);
   transform: translate3d(0, 120%, 0);
   transition: opacity .72s ease, transform 1.18s cubic-bezier(.22, 1, .36, 1);
@@ -112,11 +113,20 @@ select {
   transition: fill-opacity .16s ease;
 }
 
+#cur-ring .ring-hit-areas path {
+  fill: transparent;
+  pointer-events: all;
+  cursor: pointer;
+}
+
 #cur-ring text {
   fill: #a7a7a7;
   font-family: Helvetica, "helvetica-lt-pro", "yu-gothic-pr6n", "Yu Gothic", "游ゴシック体", YuGothic, sans-serif;
   font-weight: 400;
   font-size: 47px;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
   transition: fill .3s ease;
 }
 
@@ -137,6 +147,10 @@ body.cursor-hover #cur-ring .cursor-ring-bg { fill-opacity: .80; }
 
 body.mobile-ring-dragging #cur-ring .cursor-ring-bg {
   fill-opacity: 1;
+}
+
+body.mobile-ring-dragging #cur-ring {
+  cursor: grabbing;
 }
 
 body.lightbox-open #cur,
@@ -313,7 +327,10 @@ html.splash-skipped body.splash-on { overflow: auto; }
   transform: translate3d(0, 0, 0);
 }
 .hero-slide img{
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
+  object-fit: cover;
 }
 
 .hero-slide:nth-child(n+2) {
