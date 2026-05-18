@@ -67,11 +67,11 @@ select {
   position: fixed;
   left: auto;
   top: auto;
-  right: -68px;
-  bottom: -68px;
+  right: -90px;
+  bottom: -90px;
   z-index: 100;
-  width: 190px;
-  height: 190px;
+  width: 250px;
+  height: 250px;
   display: block;
   opacity: 0;
   pointer-events: none;
@@ -87,8 +87,8 @@ select {
   top: 0;
   right: auto;
   bottom: auto;
-  width: 190px;
-  height: 190px;
+  width: 250px;
+  height: 250px;
   overflow: visible;
   transform: none;
   transform-origin: center;
@@ -161,13 +161,18 @@ body.lightbox-open * { cursor: auto !important; }
   padding: 38px clamp(26px, 5vw, 72px);
   border-bottom: 1px solid transparent;
   pointer-events: none;
-  transition: background .24s ease, border-color .24s ease;
+  transition: background .24s ease, border-color .24s ease, opacity .24s ease, transform .24s ease;
 }
 
 body.nav-open .site-header {
   background: rgba(255, 255, 255, .92);
   border-bottom-color: rgba(93, 85, 80, .18);
   backdrop-filter: blur(10px);
+}
+
+body.footer-in-view:not(.nav-open) .site-header {
+  opacity: 0;
+  transform: translateY(-100%);
 }
 
 .logo,
@@ -185,6 +190,10 @@ body.nav-open .site-header {
   width: 100%;
   height: auto;
   object-fit: contain;
+}
+
+.site-header > .logo img {
+  transform: translateX(-6.6667%);
 }
 
 .menu-button {
@@ -449,7 +458,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .plan-copy {
   margin: 0 0 28px;
   text-align: center;
-  line-height: 1.9;
+  line-height: 1.65;
   font-size: 16px;
   font-weight: 400;
   text-shadow: 0 0 5px rgba(255,255,255,0.2);
@@ -457,7 +466,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
 
 .plan-card ul {
   display: grid;
-  gap: 13px;
+  gap: 8px;
   margin: 0 0 36px;
   padding: 0;
   list-style: none;
@@ -465,7 +474,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
 
 .plan-card li{
   border: 1px solid var(--line);
-  border-radius: 5px;
+  border-radius: 15px;
   background: rgba(255,255,255,.94);
   padding: 8px 12px;
   text-align: center;
@@ -1031,14 +1040,27 @@ details p { margin: 0; text-align: center; }
 .site-footer {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 48px;
+  grid-template-areas:
+    "info nav"
+    "info sns";
+  column-gap: 48px;
+  row-gap: 48px;
+  align-items: end;
   padding: 92px clamp(26px, 5vw, 72px) 54px;
   border-top: 1px solid var(--line);
   background: #fff;
   color: var(--ink);
 }
 
+.site-footer > div {
+  grid-area: info;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
 .footer-logo { width: 120px; }
+.footer-logo img { transform: translateX(-6.6667%); }
 address {
   margin: 32px 0 36px;
   font-style: normal;
@@ -1047,8 +1069,9 @@ address {
 .copyright,
 .sns {
   margin: 0;
-  font-size: 26px;
+  font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 400;
+  line-height: 1.1;
 }
 .sns a:hover{
   text-decoration: underline;
@@ -1069,6 +1092,7 @@ address {
 }
 
 .site-footer nav {
+  grid-area: nav;
   display: grid;
   gap: 12px;
   align-content: start;
@@ -1080,11 +1104,16 @@ address {
   text-decoration: underline;
 }
 .sns {
-  grid-column: 1 / -1;
+  grid-area: sns;
   justify-self: end;
+  align-self: end;
   display: flex;
   align-items: baseline;
   gap: .4em;
+}
+
+.copyright {
+  margin-top: auto;
 }
 .sns a:not(:first-child) {
   margin-left: 1em;
@@ -1099,10 +1128,11 @@ address {
 }
 .plan-copy{
   font-size: 14px;
+  line-height: 1.65;
   margin-bottom: 15px;
 }
 .plan-card ul{
-  gap: 10px;
+  gap: 8px;
 }
 .plan-head{
   top: 15px;
@@ -1133,7 +1163,13 @@ address {
   .plan-card { min-height: 560px; max-width: 420px; margin: 0 auto; width: 100%; }
   .gallery-grid { --gallery-cols: 2; }
   .use-list { grid-template-columns: 1fr 1fr; }
-  .site-footer { grid-template-columns: 1fr; }
+  .site-footer {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "info"
+      "nav"
+      "sns";
+  }
   .site-footer nav,
   .sns { justify-self: start; text-align: left; }
 }

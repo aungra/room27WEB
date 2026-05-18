@@ -33,6 +33,11 @@ const nav = document.querySelector(".global-nav");
 
 function updateHeaderState() {
   document.body.classList.toggle("is-scrolled", window.scrollY > 12);
+  const footer = document.querySelector(".site-footer");
+  if (!footer) return;
+
+  const footerTop = footer.getBoundingClientRect().top;
+  document.body.classList.toggle("footer-in-view", footerTop <= window.innerHeight);
 }
 
 updateHeaderState();
