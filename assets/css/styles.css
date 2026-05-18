@@ -726,6 +726,32 @@ html.splash-skipped body.splash-on { overflow: auto; }
   font-size: 16px;
   padding: 25px 15px;
 }
+
+.rental-actions a .window-icon::after,
+.rental-actions a .pdf-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 50px;
+  bottom: .2em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .28s ease;
+}
+
+.rental-actions a:hover .window-icon::after,
+.rental-actions a:hover .pdf-icon::after {
+  transform: scaleX(1);
+}
+
+@media (hover: none) {
+  .rental-actions a .window-icon::after,
+  .rental-actions a .pdf-icon::after {
+    display: none;
+  }
+}
 @media (max-width: 770px) {
   .rental-txt{
     text-align: center;
@@ -921,7 +947,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
   padding: 12px 5px 12px 2px;
   border-top: 1px solid var(--line);
   border-right: 1px solid var(--line);
-  border-radius: 0 5px 0 0;
+  border-radius: 0 10px 0 0;
   font-size: 16px;
 }
 .faq-label.second { margin-top: 72px; }
