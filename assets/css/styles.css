@@ -239,7 +239,8 @@ body.footer-in-view:not(.nav-open) .site-header {
   color: #000;
   font-family: "eb-garamond", "biz-udmincho", serif;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 12px;
+  letter-spacing: .18em;
   text-align: right;
 }
 
@@ -372,9 +373,10 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .section-title h1,
 .section-title h2 {
   margin: 0 0 6px;
-  font-size: clamp(31px, 2.7vw, 42px);
+  font-size: clamp(29px, 2.55vw, 40px);
   font-weight: 400;
   line-height: 1;
+  letter-spacing: .18em;
 }
 
 .section-title p {
@@ -455,18 +457,20 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 
 .plan-head b {
-  font-size: clamp(24px, 1.8vw, 32px);
+  font-size: clamp(22px, 1.65vw, 30px);
   line-height: 1.1;
   margin-bottom: 5px;
+  letter-spacing: .16em;
 }
 
 .plan-head strong {
   position: absolute;
   top: 0;
   right: 0;
-  font-size: 60px;
+  font-size: 56px;
   font-weight: 400;
   line-height: .8;
+  letter-spacing: .12em;
 }
 
 .plan-copy {
@@ -490,9 +494,12 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .plan-card li{
   border: 1px solid var(--line);
   border-radius: 15px;
-  background: rgba(255,255,255,.98);
-  padding: 8px 12px;
+  background: rgba(255,255,255,.6);
+  padding: 8px 10px;
   text-align: center;
+  font-size: 12px;
+  letter-spacing: .16em;
+  white-space: nowrap;
 }
 
 .plan-price {
@@ -508,7 +515,8 @@ html.splash-skipped body.splash-on { overflow: auto; }
   border-radius: 10px 0 0 0;
   background: rgba(255,255,255,1);
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
+  letter-spacing: .16em;
 }
 
 .orbit {
@@ -1148,9 +1156,10 @@ address {
 .copyright,
 .sns {
   margin: 0;
-  font-size: clamp(14px, 1.35vw, 18px);
+  font-size: clamp(13px, 1.25vw, 17px);
   font-weight: 400;
   line-height: 1.1;
+  letter-spacing: .16em;
 }
 .sns a:hover{
   text-decoration: underline;
@@ -1176,8 +1185,9 @@ address {
   gap: 12px;
   align-content: start;
   text-align: right;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
+  letter-spacing: .16em;
 }
 .site-footer nav a:hover{
   text-decoration: underline;
@@ -1326,8 +1336,9 @@ address {
   .global-nav span {
     font-family: "eb-garamond", "biz-udmincho", serif;
     font-weight: 400;
-    font-size: clamp(30px, 8vw, 42px);
+    font-size: clamp(28px, 7.4vw, 39px);
     line-height: 1;
+    letter-spacing: .16em;
   }
 
   .global-nav small {
