@@ -689,14 +689,25 @@ if (galleryImages.length && lightbox && lightboxImage) {
   lightboxNext.addEventListener("click", () => showLightboxImage(lightboxIndex + 1));
 
   lightbox.addEventListener("click", (event) => {
-    if (event.target.closest(".lightbox-close, .lightbox-nav, .lightbox-frame img")) return;
+    if (event.target.closest(".lightbox-close, .lightbox-nav")) {
+      return;
+    }
     closeLightbox();
   });
 
   window.addEventListener("keydown", (event) => {
     if (!lightbox.classList.contains("is-open")) return;
-    if (event.key === "Escape") closeLightbox();
-    if (event.key === "ArrowLeft") showLightboxImage(lightboxIndex - 1);
-    if (event.key === "ArrowRight") showLightboxImage(lightboxIndex + 1);
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeLightbox();
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      showLightboxImage(lightboxIndex - 1);
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      showLightboxImage(lightboxIndex + 1);
+    }
   });
 }
