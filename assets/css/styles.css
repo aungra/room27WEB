@@ -1,5 +1,5 @@
 :root {
-  --ink: #261b18;
+  --ink: #000;
   --line: #5d5550;
   --muted: #918a86;
   --soft: #f7f6f4;
@@ -131,7 +131,7 @@ select {
 }
 
 #cur-ring text.is-active {
-  fill: #211714;
+  fill: #000;
 }
 
 body.cursor-ready.mobile-cursor-visible:not(.lightbox-open):not(.nav-open):not(.splash-on) #cur-ring {
@@ -236,7 +236,7 @@ body.footer-in-view:not(.nav-open) .site-header {
   align-items: center;
   gap: clamp(18px, 2.2vw, 34px);
   margin-top: 0;
-  color: #211714;
+  color: #000;
   font-family: "helvetica-lt-pro", "yu-gothic-pr6n", "Yu Gothic", "游ゴシック体", YuGothic, sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -382,10 +382,14 @@ html.splash-skipped body.splash-on { overflow: auto; }
   font-size: 15px;
 }
 
+.plan-section {
+  color: #000;
+}
+
 .plans {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+  gap: 12px;
 }
 
 .plan-card {
@@ -393,124 +397,127 @@ html.splash-skipped body.splash-on { overflow: auto; }
   min-height: 620px;
   width: 100%;
   aspect-ratio: 167/309;
-  padding: 20px 40px 20px;
-  border: 1px solid var(--line);
-  /*overflow: hidden;*/
+  padding: 0;
+  border: none;
+  overflow: hidden;
+  background: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  border-radius: 0 10px 0 0;
+  justify-content: flex-start;
+  border-radius: 0;
 }
-.plan-card::after {
+.plan-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  /*background: rgba(255,255,255,.36);*/
+  left: 11%;
+  top: 8.2%;
+  width: 84%;
+  height: 68%;
+  background: var(--plan-image) center bottom / cover no-repeat;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 .plan-card.plan01 {
-  background: url(../img/plan01.webp) center no-repeat;
-  background-size: cover;
+  --plan-image: url(../img/plan01.webp);
 }
 .plan-card.plan02 {
-  background: url(../img/plan02.webp) center no-repeat;
-  background-size: cover;
+  --plan-image: url(../img/plan02.webp);
 }
 .plan-card.plan03 {
-  background: url(../img/plan03.webp) center no-repeat;
-  background-size: cover;
+  --plan-image: url(../img/plan03.webp);
 }
 .plan-card.muted { color: #888; }
-/*
-.plan-card.featured::after { 
-  background: rgba(255,255,255,.18); 
-}
-*/
 
-.plan-list,.plan-copy,.plan-price{
+.plan-head,.plan-list,.plan-copy,.plan-price{
   position: relative;
   z-index: 1;
 }
 .plan-head {
   position: absolute;
-  top: 30px;
-  left: 0;
-  right: 18px;
+  top: 1.8%;
+  left: 5%;
+  right: 5%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  gap: 18px;
 }
 
 .plan-head span {
   display: grid;
-  width: 40%;
-  padding: 15px 10px;
-  border: 1px solid var(--line);
-  border-left: none;
-  background: rgba(255,255,255,1);
+  width: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
   font-size: 11px;
-  border-radius: 0 10px 0 0;
-  position: absolute;
-  top: 0;
-  left: -1px;
-  line-height: 1;
+  border-radius: 0;
+  line-height: 1.25;
+  order: 2;
 }
 
 .plan-head b {
-  font-size: clamp(24px, 1.8vw, 32px);
+  font-size: clamp(24px, 2.8vw, 38px);
   line-height: 1.1;
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 
 .plan-head strong {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 60px;
+  order: 1;
+  font-size: clamp(52px, 6.7vw, 86px);
   font-weight: 400;
-  line-height: .8;
+  line-height: .76;
 }
 
 .plan-copy {
-  margin: 0 0 28px;
-  text-align: center;
-  line-height: 1.65;
-  font-size: 16px;
-  font-weight: 400;
-  text-shadow: 0 0 5px rgba(255,255,255,0.2);
+  position: absolute;
+  top: 13.4%;
+  left: 5%;
+  right: 8%;
+  margin: 0;
+  text-align: left;
+  line-height: 1.55;
+  font-size: clamp(14px, 1.25vw, 20px);
+  font-weight: 500;
+  text-shadow: none;
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .plan-card ul {
+  position: absolute;
+  left: 18%;
+  right: 9%;
+  bottom: 9.6%;
   display: grid;
-  gap: 8px;
-  margin: 0 0 36px;
+  gap: 3px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .plan-card li{
   border: 1px solid var(--line);
-  border-radius: 15px;
-  background: rgba(255,255,255,.94);
-  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.96);
+  padding: 5px 10px 6px;
   text-align: center;
+  line-height: 1.35;
 }
 
 .plan-price {
-  width: 70%;
+  width: 100%;
   max-width: 100%;
   position: absolute;
-  bottom: 50px;
-  right: -1px;
+  bottom: 1.8%;
+  left: 0;
+  right: 0;
   margin: 0 auto;
-  padding: 9px 10px;
-  border: 1px solid var(--line);
-  border-right: none;
-  border-radius: 10px 0 0 0;
-  background: rgba(255,255,255,1);
+  padding: 0 10px;
+  border: none;
+  background: transparent;
   text-align: center;
-  font-size: 24px;
+  font-size: clamp(24px, 2.5vw, 32px);
+  line-height: 1.2;
 }
 
 .orbit {
@@ -541,7 +548,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
   left: 50%;
   top: 50%;
   font-size: 13px;
-  color: #211714;
+  color: #000;
   transform-origin: 0 0;
 }
 .orbit span:nth-child(1) { transform: rotate(-14deg) translate(31px) rotate(14deg); }
@@ -778,9 +785,19 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .access-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(24px, 6vw, 80px);
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  gap: clamp(20px, 3.2vw, 44px);
   text-align: center;
   align-items: stretch;
+}
+
+@media (min-width: 1101px) {
+  .access-cards {
+    grid-template-columns: repeat(3, 300px);
+    justify-content: center;
+    gap: 24px;
+  }
 }
 
 .access-cards article {
@@ -790,11 +807,16 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 
 .access-card-body {
-  flex: 1;
+  position: relative;
+  flex: 0 0 clamp(230px, 18vw, 260px);
+  width: 100%;
+  max-width: 300px;
+  min-height: clamp(230px, 18vw, 260px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  align-self: center;
+  justify-content: flex-start;
   gap: 14px;
   padding: 22px 12px 28px;
   border: 1px solid var(--line);
@@ -817,20 +839,25 @@ html.splash-skipped body.splash-on { overflow: auto; }
   font-size: 20px;
 }
 .access-card-body img {
+  position: absolute;
+  left: 50%;
+  top: auto;
+  bottom: clamp(42px, 5vw, 66px);
   height: auto;
-  margin-top: auto;
+  margin-top: 0;
+  transform: translateX(-50%);
 }
 
 .access-cards article:nth-child(1) .access-card-body img {
-  width: 85px;
+  width: 68px;
 }
 
 .access-cards article:nth-child(2) .access-card-body img {
-  width: 92px;
+  width: 74px;
 }
 
 .access-cards article:nth-child(3) .access-card-body img {
-  width: 74px;
+  width: 59px;
 }
 
 .access-card-note {
@@ -945,19 +972,19 @@ html.splash-skipped body.splash-on { overflow: auto; }
   transform: rotate(135deg);
 }
 
-.faq-section { max-width: 1080px; padding-bottom: 90px; }
+.faq-section { max-width: 860px; padding-bottom: 72px; }
 .faq-label {
-  width: 245px;
-  margin: 0 0 20px 0;
-  padding: 12px 5px 12px 2px;
+  width: 210px;
+  margin: 0 0 16px 0;
+  padding: 9px 5px 9px 2px;
   border-top: 1px solid var(--line);
   border-right: 1px solid var(--line);
   border-radius: 0 10px 0 0;
-  font-size: 16px;
+  font-size: 14px;
 }
-.faq-label.second { margin-top: 72px; }
+.faq-label.second { margin-top: 52px; }
 
-.faq-list { display: grid; gap: 52px; }
+.faq-list { display: grid; gap: 28px; }
 details {
   border: 1px solid var(--line);
   background: #fff;
@@ -967,13 +994,13 @@ details {
 summary {
   position: relative;
   display: grid;
-  grid-template-columns: 44px 1fr 52px;
+  grid-template-columns: 36px 1fr 42px;
   align-items: center;
-  min-height: 44px;
-  padding: 0 12px;
+  min-height: 38px;
+  padding: 0 10px;
   cursor: pointer;
   list-style: none;
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(15px, 1.55vw, 19px);
   font-weight: 500;
   text-align: center;
 }
@@ -982,8 +1009,8 @@ summary::-webkit-details-marker { display: none; }
 summary::after {
   content: "";
   justify-self: center;
-  width: 22px;
-  height: 22px;
+  width: 17px;
+  height: 17px;
   border-top: 1px solid var(--line);
   border-right: 1px solid var(--line);
   transform: rotate(-45deg) translateY(5px);
@@ -993,19 +1020,19 @@ details:not([open]) summary::after { transform: rotate(135deg) translateY(5px); 
 
 .faq-answer {
   display: grid;
-  grid-template-columns: 44px 1fr;
+  grid-template-columns: 36px 1fr;
   align-items: start;
   border-top: 1px solid var(--line);
-  padding: 24px 12px 24px;
-  line-height: 1.8;
-  font-size: 16px;
+  padding: 18px 10px;
+  line-height: 1.65;
+  font-size: 14px;
 }
 
 details b,summary span {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(15px, 1.55vw, 19px);
   font-weight: bold;
   text-align: center;
-  line-height: 1.8;
+  line-height: 1.65;
   font-family:"yu-gothic-pr6n", "Yu Gothic", "游ゴシック体", YuGothic, sans-serif;
 }
 details p { margin: 0; text-align: center; }
@@ -1013,8 +1040,8 @@ details p { margin: 0; text-align: center; }
 @media (max-width: 767px) {
   summary{
     text-align: left;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
   .faq-answer p{
     text-align: left;
@@ -1168,26 +1195,24 @@ address {
 }
 @media screen and (min-width:900px) and ( max-width:1100px){
 .plan-head span{
-  padding: 10px 10px 5px 10px;
+  font-size: 10px;
 }
 .plan-card{
   min-height: unset;
-  padding: 35px 15px 15px 15px;
 }
 .plan-copy{
   font-size: 14px;
   line-height: 1.65;
-  margin-bottom: 15px;
 }
 .plan-card ul{
-  gap: 8px;
+  left: 15%;
+  right: 6%;
+  gap: 3px;
 }
 .plan-head{
-  top: 15px;
+  gap: 10px;
 }
 .plan-price{
-  bottom: 25px;
-  width: 90%;
   font-size: 22px;
 }
 }
@@ -1209,6 +1234,11 @@ address {
   .plans,
   .access-cards { grid-template-columns: 1fr; }
   .plan-card { min-height: 560px; max-width: 420px; margin: 0 auto; width: 100%; }
+  .access-card-body {
+    flex-basis: 296px;
+    max-width: 100%;
+    min-height: 296px;
+  }
   .gallery-grid { --gallery-cols: 2; }
   .use-list { grid-template-columns: 1fr 1fr; }
   .site-footer {
@@ -1378,8 +1408,32 @@ address {
   .logo { width: 120px; }
   .hero .note { right: 20px; bottom: 24px; }
   .section { padding-inline: 16px; }
-  .plan-card { padding: 18px 24px 36px; }
-  .plan-head strong { font-size: 48px; }
+  .plan-card { min-height: 720px; }
+  .plan-card::before {
+    left: 14%;
+    width: 80%;
+    height: 69%;
+    top: 8.8%;
+  }
+  .plan-head {
+    left: 6%;
+    right: 6%;
+    gap: 12px;
+  }
+  .plan-head strong { font-size: 58px; }
+  .plan-head b { font-size: 28px; }
+  .plan-copy {
+    top: 13.8%;
+    left: 6%;
+    right: 6%;
+    font-size: 14px;
+  }
+  .plan-card ul {
+    left: 14%;
+    right: 6%;
+    gap: 3px;
+  }
+  .plan-price { font-size: 25px; }
   .gallery-grid { --gallery-cols: 1; }
   .gallery-section .section-title {
     display: block;
@@ -1411,8 +1465,8 @@ address {
   .map-box iframe{
     aspect-ratio: 3/2;
   }
-  summary { grid-template-columns: 32px 1fr 34px; font-size: 16px; }
-  .faq-answer { grid-template-columns: 32px 1fr; }
+  summary { grid-template-columns: 28px 1fr 30px; font-size: 14px; }
+  .faq-answer { grid-template-columns: 28px 1fr; }
   .br-pc { display: none; }
   .contact-section { padding-inline: 18px; }
   .site-footer { padding-inline: 24px; }
