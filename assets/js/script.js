@@ -36,7 +36,7 @@ function wrapLatinText(root = document.body) {
     acceptNode(node) {
       const parent = node.parentElement;
       if (!parent) return NodeFilter.FILTER_REJECT;
-      if (parent.closest("script, style, noscript, svg, .latin")) {
+      if (parent.closest("script, style, noscript, svg, summary, .faq-answer, .latin")) {
         return NodeFilter.FILTER_REJECT;
       }
       return /[A-Za-z0-9]/.test(node.nodeValue)

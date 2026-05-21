@@ -1061,14 +1061,15 @@ details:not([open]) summary::after { transform: rotate(135deg) translateY(5px); 
   font-size: 14px;
 }
 
-details b,summary span {
+details b,
+summary > span:not(.latin) {
   font-size: clamp(14px, 1.42vw, 17px);
   font-weight: bold;
   text-align: center;
   line-height: 1.65;
 }
 details b { font-family: "eb-garamond", serif; }
-summary span { font-family: "biz-udmincho", serif; }
+summary > span:not(.latin) { font-family: "biz-udmincho", serif; }
 details p { margin: 0; text-align: center; }
 .compact { margin-bottom: 0; }
 @media (max-width: 767px) {
