@@ -18,7 +18,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: #fff;
-  font-family: "eb-garamond", "biz-udmincho", serif;
+  font-family: "biz-udmincho", serif;
   font-weight: 400;
   font-size: 13px;
   letter-spacing: .09em;
@@ -55,8 +55,22 @@ button,
 input,
 textarea,
 select {
-  font-family: "eb-garamond", "biz-udmincho", serif;
+  font-family: "biz-udmincho", serif;
   font-weight: 400;
+}
+
+.latin,
+#cur-ring text,
+.global-nav,
+.global-nav span,
+.section-title h1,
+.section-title h2,
+.plan-head b,
+.plan-head strong,
+.plan-price,
+.site-footer nav,
+.sns {
+  font-family: "eb-garamond", serif;
 }
 
 #cur {
@@ -121,7 +135,6 @@ select {
 
 #cur-ring text {
   fill: #a7a7a7;
-  font-family: "eb-garamond", "biz-udmincho", serif;
   font-weight: 400;
   font-size: 44px;
   cursor: pointer;
@@ -237,7 +250,6 @@ body.footer-in-view:not(.nav-open) .site-header {
   gap: clamp(18px, 2.2vw, 34px);
   margin-top: 0;
   color: #000;
-  font-family: "eb-garamond", "biz-udmincho", serif;
   font-weight: 400;
   font-size: 12px;
   letter-spacing: .18em;
@@ -1045,8 +1057,9 @@ details b,summary span {
   font-weight: bold;
   text-align: center;
   line-height: 1.65;
-  font-family: "eb-garamond", "biz-udmincho", serif;
 }
+details b { font-family: "eb-garamond", serif; }
+summary span { font-family: "biz-udmincho", serif; }
 details p { margin: 0; text-align: center; }
 .compact { margin-bottom: 0; }
 @media (max-width: 767px) {
@@ -1334,7 +1347,6 @@ address {
   }
 
   .global-nav span {
-    font-family: "eb-garamond", "biz-udmincho", serif;
     font-weight: 400;
     font-size: clamp(28px, 7.4vw, 39px);
     line-height: 1;

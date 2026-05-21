@@ -28,6 +28,57 @@ if (splash) {
   revealCursor();
 }
 
+function wrapLatinText(root = document.body) {
+  if (!root || root.dataset.latinWrapped === "1") return;
+
+  const latinRunPattern = /([A-Za-z0-9][A-Za-z0-9.,&+()/:'"!?-]*(?:\s+[+&]?\s*[A-Za-z0-9][A-Za-z0-9.,&+()/:'"!?-]*)*)/g;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      if (!parent) return NodeFilter.FILTER_REJECT;
+      if (parent.closest("script, style, noscript, svg, .latin")) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return /[A-Za-z0-9]/.test(node.nodeValue)
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+
+  while (walker.nextNode()) {
+    nodes.push(walker.currentNode);
+  }
+
+  nodes.forEach((node) => {
+    const text = node.nodeValue;
+    const fragment = document.createDocumentFragment();
+    let lastIndex = 0;
+
+    text.replace(latinRunPattern, (match, _run, offset) => {
+      if (offset > lastIndex) {
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+      }
+      const span = document.createElement("span");
+      span.className = "latin";
+      span.textContent = match;
+      fragment.appendChild(span);
+      lastIndex = offset + match.length;
+      return match;
+    });
+
+    if (lastIndex === 0) return;
+    if (lastIndex < text.length) {
+      fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
+    node.parentNode.replaceChild(fragment, node);
+  });
+
+  root.dataset.latinWrapped = "1";
+}
+
+wrapLatinText();
+
 const menuButton = document.querySelector(".menu-button");
 const nav = document.querySelector(".global-nav");
 
