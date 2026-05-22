@@ -3,6 +3,33 @@ function revealCursor() {
   document.body.classList.add("cursor-ready");
 }
 
+function waitForFontsReady() {
+  const root = document.documentElement;
+  if (root.classList.contains("fonts-ready") || root.classList.contains("wf-active") || root.classList.contains("wf-inactive")) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      window.removeEventListener("room27-fonts-ready", finish);
+      if (observer) observer.disconnect();
+      resolve();
+    };
+    const observer = new MutationObserver(() => {
+      if (root.classList.contains("fonts-ready") || root.classList.contains("wf-active") || root.classList.contains("wf-inactive")) {
+        finish();
+      }
+    });
+
+    window.addEventListener("room27-fonts-ready", finish, { once: true });
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    setTimeout(finish, 3200);
+  });
+}
+
 if (splash) {
   if (document.documentElement.classList.contains("splash-skipped")) {
     document.body.classList.remove("splash-on");
@@ -12,7 +39,10 @@ if (splash) {
     requestAnimationFrame(() => {
       splash.classList.add("is-logo-in");
     });
-    setTimeout(() => {
+    Promise.all([
+      new Promise((resolve) => setTimeout(resolve, 1500)),
+      waitForFontsReady()
+    ]).then(() => {
       const finishSplash = (event) => {
         if (event && event.propertyName !== "opacity") return;
         splash.classList.add("is-hidden");
