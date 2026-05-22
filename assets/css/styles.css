@@ -561,6 +561,11 @@ html.splash-skipped body.splash-on { overflow: auto; }
   letter-spacing: .04em;
 }
 
+.plan-card .plan-tags .plan-tag-note {
+  flex-basis: 100%;
+  white-space: normal;
+}
+
 .plan-price {
   width: 76%;
   max-width: 100%;
