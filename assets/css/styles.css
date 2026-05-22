@@ -18,8 +18,9 @@ body {
   margin: 0;
   color: var(--ink);
   background: #fff;
-  font-family: "biz-udmincho", serif;
-  font-weight: 400;
+  font-family: "a-otf-ryumin-pr6n", serif;
+  font-weight: 300;
+  font-style: normal;
   font-size: 13px;
   letter-spacing: .09em;
   max-width: 100%;
@@ -55,8 +56,9 @@ button,
 input,
 textarea,
 select {
-  font-family: "biz-udmincho", serif;
-  font-weight: 400;
+  font-family: "a-otf-ryumin-pr6n", serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
 .latin,
@@ -398,20 +400,21 @@ html.splash-skipped body.splash-on { overflow: auto; }
 
 .plan-section {
   color: #000;
+  max-width: 1440px;
 }
 
 .plans {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 4px;
 }
 
 .plan-card {
   position: relative;
-  min-height: 620px;
+  min-height: 560px;
   width: 100%;
   aspect-ratio: 167/309;
-  padding: 20px 40px 20px;
+  padding: 20px 28px;
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
@@ -437,6 +440,10 @@ html.splash-skipped body.splash-on { overflow: auto; }
   background: url(../img/plan03.webp) center no-repeat;
   background-size: cover;
 }
+.plan-card.plan04 {
+  background: url(../img/plan04.jpg) center no-repeat;
+  background-size: cover;
+}
 .plan-card.muted { color: #888; }
 
 .plan-list,.plan-copy,.plan-price{
@@ -459,9 +466,9 @@ html.splash-skipped body.splash-on { overflow: auto; }
   align-content: center;
   justify-items: start;
   gap: 5px;
-  width: clamp(128px, 40%, 178px);
-  min-height: 68px;
-  padding: 15px 10px;
+  width: clamp(116px, 42%, 164px);
+  min-height: 62px;
+  padding: 12px 9px;
   border: 1px solid var(--line);
   border-left: none;
   background: rgba(255,255,255,1);
@@ -477,7 +484,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .plan-head b {
   display: block;
   max-width: 100%;
-  font-size: clamp(22px, 1.65vw, 30px);
+  font-size: clamp(20px, 1.45vw, 28px);
   line-height: 1.1;
   margin-bottom: 0;
   letter-spacing: .16em;
@@ -488,7 +495,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
   position: absolute;
   top: 0;
   right: 0;
-  font-size: 56px;
+  font-size: clamp(44px, 4vw, 54px);
   font-weight: 400;
   line-height: .8;
   letter-spacing: .12em;
@@ -497,17 +504,17 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .plan-copy {
   margin: 0 0 28px;
   text-align: center;
-  line-height: 1.65;
-  font-size: 15px;
-  font-weight: 400;
+  line-height: 1.58;
+  font-size: clamp(12px, .95vw, 14px);
+  font-weight: 300;
   text-shadow: 0 0 5px rgba(255,255,255,0.2);
   transform: translateY(-10px);
 }
 
 .plan-card ul {
   display: grid;
-  gap: 8px;
-  margin: 0 0 36px;
+  gap: 7px;
+  margin: 0 0 34px;
   padding: 0;
   list-style: none;
 }
@@ -516,15 +523,15 @@ html.splash-skipped body.splash-on { overflow: auto; }
   border: 1px solid var(--line);
   border-radius: 15px;
   background: rgba(255,255,255,.6);
-  padding: 8px 10px;
+  padding: 7px 8px;
   text-align: center;
-  font-size: 12px;
-  letter-spacing: .16em;
+  font-size: clamp(10px, .82vw, 12px);
+  letter-spacing: .12em;
   white-space: nowrap;
 }
 
 .plan-price {
-  width: 70%;
+  width: 76%;
   max-width: 100%;
   position: absolute;
   bottom: 50px;
@@ -536,8 +543,22 @@ html.splash-skipped body.splash-on { overflow: auto; }
   border-radius: 10px 0 0 0;
   background: rgba(255,255,255,1);
   text-align: center;
-  font-size: 20px;
-  letter-spacing: .16em;
+  font-size: clamp(16px, 1.3vw, 18px);
+  letter-spacing: .12em;
+}
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .plans {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 840px;
+    margin-inline: auto;
+  }
+
+  .plan-card {
+    max-width: 420px;
+    min-height: 560px;
+    margin-inline: auto;
+  }
 }
 
 .orbit {
@@ -839,17 +860,17 @@ html.splash-skipped body.splash-on { overflow: auto; }
 
 .access-card-body {
   position: relative;
-  flex: 0 0 clamp(230px, 18vw, 260px);
+  flex: 0 0 clamp(260px, 20vw, 300px);
   width: 100%;
   max-width: 300px;
-  min-height: clamp(230px, 18vw, 260px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: clamp(260px, 20vw, 300px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
   align-self: center;
-  justify-content: flex-start;
-  gap: 14px;
-  padding: 22px 12px 28px;
+  align-items: start;
+  gap: 10px;
+  padding: 22px 12px 20px;
   border: 1px solid var(--line);
   border-radius: 5px;
 }
@@ -861,7 +882,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .access-card-body h3 {
   margin: 0;
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 300;
 }
 .access-card-body-txt p{
   margin: 5px 0;
@@ -870,13 +891,9 @@ html.splash-skipped body.splash-on { overflow: auto; }
   font-size: 18px;
 }
 .access-card-body img {
-  position: absolute;
-  left: 50%;
-  top: auto;
-  bottom: clamp(42px, 5vw, 66px);
+  align-self: center;
   height: auto;
   margin-top: 0;
-  transform: translateX(-50%);
 }
 
 .access-cards article:nth-child(1) .access-card-body img {
@@ -892,9 +909,11 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 
 .access-card-note {
-  min-height: 46px;
-  margin: 14px 0 0;
-  line-height: 1.6;
+  align-self: end;
+  min-height: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .map-box {
@@ -1028,13 +1047,14 @@ summary {
   position: relative;
   display: grid;
   grid-template-columns: 36px 1fr 42px;
+  column-gap: 10px;
   align-items: center;
   min-height: 38px;
   padding: 0 10px;
   cursor: pointer;
   list-style: none;
   font-size: clamp(14px, 1.42vw, 17px);
-  font-weight: 500;
+  font-weight: 300;
   text-align: center;
 }
 
@@ -1069,7 +1089,7 @@ summary > span:not(.latin) {
   line-height: 1.65;
 }
 details b { font-family: "eb-garamond", serif; }
-summary > span:not(.latin) { font-family: "biz-udmincho", serif; }
+summary > span:not(.latin) { font-family: "a-otf-ryumin-pr6n", serif; }
 details p { margin: 0; text-align: center; }
 .compact { margin-bottom: 0; }
 @media (max-width: 767px) {
@@ -1093,7 +1113,7 @@ details p { margin: 0; text-align: center; }
 .contact-section > p {
   margin: 0 auto 24px;
   line-height: 1.8;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .contact-cards {
@@ -1249,9 +1269,9 @@ address {
   .access-cards { grid-template-columns: 1fr; }
   .plan-card { min-height: 560px; max-width: 420px; margin: 0 auto; width: 100%; }
   .access-card-body {
-    flex-basis: 296px;
+    flex-basis: 320px;
     max-width: 100%;
-    min-height: 296px;
+    min-height: 320px;
   }
   .gallery-grid { --gallery-cols: 2; }
   .use-list { grid-template-columns: 1fr 1fr; }
@@ -1286,13 +1306,11 @@ address {
 
   html { scroll-padding-top: 92px; }
 
-  .access-card-body {
-    flex-basis: 240px;
-    min-height: 240px;
-  }
+  .plans { grid-template-columns: 1fr; }
 
-  .access-card-body img {
-    bottom: 30px;
+  .access-card-body {
+    flex-basis: 280px;
+    min-height: 280px;
   }
 
   .menu-button {
@@ -1356,7 +1374,7 @@ address {
     border-top: 1px solid var(--line);
   }
 
-  .global-nav span {
+  .global-nav a:not(.logo) > span {
     font-weight: 400;
     font-size: clamp(28px, 7.4vw, 39px);
     line-height: 1;
@@ -1366,28 +1384,29 @@ address {
   .global-nav small {
     display: block;
     padding-left: 24px;
+    font-family: "a-otf-ryumin-pr6n", serif;
     font-size: clamp(13px, 3.2vw, 18px);
-    font-weight: 400;
+    font-weight: 300;
+    font-style: normal;
     white-space: nowrap;
   }
 
   .drawer-info {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto;
     align-items: center;
     gap: 24px;
-    padding: 50px clamp(28px, 7vw, 78px) 28px;
-  }
-
-  .drawer-logo {
-    width: 80px;
+    padding: 50px 24px 28px;
   }
 
   .drawer-info p {
     margin: 0;
+    font-family: "a-otf-ryumin-pr6n", serif;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 300;
+    font-style: normal;
     line-height: 1.7;
+    letter-spacing: .04em;
   }
 
   .instagram-icon {
@@ -1446,8 +1465,11 @@ address {
   .contact-cards a { min-width: 100%; }
   .drawer-info {
     grid-template-columns: 1fr;
-    justify-items: center;
+    justify-items: start;
     gap: 18px;
+  }
+  .drawer-info .instagram-icon {
+    justify-self: center;
   }
   .lightbox {
     grid-template-columns: 48px 1fr 48px;
@@ -1462,7 +1484,7 @@ address {
   .map-box iframe{
     aspect-ratio: 3/2;
   }
-  summary { grid-template-columns: 28px 1fr 30px; font-size: 14px; }
+  summary { grid-template-columns: 28px 1fr 34px; column-gap: 12px; font-size: 14px; }
   .faq-answer { grid-template-columns: 28px 1fr; }
   .br-pc { display: none; }
   .contact-section { padding-inline: 18px; }
