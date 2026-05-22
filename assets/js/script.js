@@ -79,6 +79,49 @@ function wrapLatinText(root = document.body) {
 
 wrapLatinText();
 
+const rentalPanel = document.querySelector(".rental-panel");
+const rentalVideo = document.querySelector(".rental-bg-video");
+
+if (rentalPanel && rentalVideo) {
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const playRentalVideo = () => {
+    if (reducedMotionQuery.matches) return;
+    if (rentalVideo.readyState === 0) rentalVideo.load();
+    const playPromise = rentalVideo.play();
+    if (playPromise) playPromise.catch(() => {});
+  };
+
+  const pauseRentalVideo = () => {
+    rentalVideo.pause();
+  };
+
+  if ("IntersectionObserver" in window) {
+    const rentalVideoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          playRentalVideo();
+        } else {
+          pauseRentalVideo();
+        }
+      });
+    }, {
+      rootMargin: "120px 0px",
+      threshold: 0.25
+    });
+
+    rentalVideoObserver.observe(rentalPanel);
+  } else {
+    playRentalVideo();
+  }
+
+  reducedMotionQuery.addEventListener("change", () => {
+    if (reducedMotionQuery.matches) {
+      pauseRentalVideo();
+    }
+  });
+}
+
 const menuButton = document.querySelector(".menu-button");
 const nav = document.querySelector(".global-nav");
 

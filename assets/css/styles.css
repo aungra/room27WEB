@@ -499,6 +499,15 @@ html.splash-skipped body.splash-on { overflow: auto; }
   white-space: nowrap;
 }
 
+.plan-head small {
+  display: block;
+  padding-top: 4px;
+  font-size: 9px;
+  line-height: 1.25;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
 .plan-head strong {
   position: absolute;
   top: 0;
@@ -559,11 +568,6 @@ html.splash-skipped body.splash-on { overflow: auto; }
   font-size: clamp(9px, .72vw, 11px);
   line-height: 1.2;
   letter-spacing: .04em;
-}
-
-.plan-card .plan-tags .plan-tag-note {
-  flex-basis: 100%;
-  white-space: normal;
 }
 
 .plan-price {
