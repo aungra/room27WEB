@@ -446,7 +446,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 .plan-card.muted { color: #888; }
 
-.plan-list,.plan-copy,.plan-price{
+.plan-list,.plan-copy,.plan-tags,.plan-price{
   position: relative;
   z-index: 1;
 }
@@ -502,21 +502,25 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 
 .plan-copy {
-  margin: 0 0 28px;
+  margin: 0 0 22px;
   text-align: center;
-  line-height: 1.58;
+  line-height: 1.4;
   font-size: clamp(12px, .95vw, 14px);
   font-weight: 300;
   text-shadow: 0 0 5px rgba(255,255,255,0.2);
-  transform: translateY(-10px);
+  transform: translateY(-6px);
+  white-space: nowrap;
 }
 
 .plan-card ul {
   display: grid;
-  gap: 7px;
-  margin: 0 0 34px;
   padding: 0;
   list-style: none;
+}
+
+.plan-list {
+  gap: 7px;
+  margin: 0 0 22px;
 }
 
 .plan-card li{
@@ -528,6 +532,25 @@ html.splash-skipped body.splash-on { overflow: auto; }
   font-size: clamp(10px, .82vw, 12px);
   letter-spacing: .12em;
   white-space: nowrap;
+}
+
+.plan-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 6px;
+  margin: 0 auto 18px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.plan-tags li {
+  border-radius: 0;
+  background: rgba(255,255,255,.75);
+  padding: 4px 7px;
+  font-size: clamp(8px, .62vw, 10px);
+  line-height: 1.2;
+  letter-spacing: .04em;
 }
 
 .plan-price {
@@ -916,10 +939,24 @@ html.splash-skipped body.splash-on { overflow: auto; }
   line-height: 1.55;
 }
 
+.access-address {
+  margin: 26px auto 0;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.8;
+  letter-spacing: .08em;
+}
+
+.access-address .latin {
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: .08em;
+}
+
 .map-box {
   display: grid;
   place-items: center;
-  margin-top: 58px;
+  margin-top: 34px;
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
