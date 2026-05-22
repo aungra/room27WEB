@@ -1235,13 +1235,17 @@ details p { margin: 0; text-align: center; }
 }
 .contact-cards a::after{
   content: "";
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   background: url(../img/windo_icon.svg) center no-repeat;
   background-size: contain;
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+.contact-cards a:nth-child(2) img {
+  width: 43.5px;
+  height: auto;
 }
 .contact-cards .link-icon {
   position: absolute;
