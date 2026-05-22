@@ -442,11 +442,11 @@ html.splash-skipped body.splash-on { overflow: auto; }
   min-height: 560px;
   width: 100%;
   aspect-ratio: 167/309;
-  padding: 20px 28px;
+  padding: 168px 28px 20px;
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   border-radius: 0 10px 0 0;
 }
 .plan-card::after {
@@ -457,11 +457,11 @@ html.splash-skipped body.splash-on { overflow: auto; }
   z-index: 1;
 }
 .plan-card.plan01 {
-  background: url(../img/plan01.jpg) center no-repeat;
+  background: url(../img/plan02.jpg) center no-repeat;
   background-size: cover;
 }
 .plan-card.plan02 {
-  background: url(../img/plan02.jpg) center no-repeat;
+  background: url(../img/plan01.jpg) center no-repeat;
   background-size: cover;
 }
 .plan-card.plan03 {
@@ -541,13 +541,12 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 
 .plan-copy {
-  margin: 0 0 22px;
+  margin: 0 0 18px;
   text-align: center;
   line-height: 1.4;
   font-size: clamp(14px, 1.08vw, 16px);
   font-weight: 300;
   text-shadow: 0 0 5px rgba(255,255,255,0.2);
-  transform: translateY(-6px);
   white-space: nowrap;
 }
 
@@ -576,7 +575,8 @@ html.splash-skipped body.splash-on { overflow: auto; }
 .plan-card .plan-tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
   gap: 4px 5px;
   margin: 0 auto 14px;
   width: 100%;
