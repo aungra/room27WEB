@@ -22,7 +22,15 @@
           h.className = h.className.replace(/\bwf-loading\b|\bwf-active\b|\bwf-inactive\b/g, "");
           if (!new RegExp("\\b" + state + "\\b").test(h.className)) h.className += " " + state;
           if (!/\bfonts-ready\b/.test(h.className)) h.className += readyClass;
-          if (window.dispatchEvent) window.dispatchEvent(new Event("room27-fonts-ready"));
+          if (window.dispatchEvent) {
+            try {
+              window.dispatchEvent(new Event("room27-fonts-ready"));
+            } catch(e) {
+              var event = d.createEvent("Event");
+              event.initEvent("room27-fonts-ready", false, false);
+              window.dispatchEvent(event);
+            }
+          }
         }
         var config = {
           kitId: "stm4vkp",
