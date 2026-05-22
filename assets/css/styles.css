@@ -1437,7 +1437,7 @@ address {
     transform: translateY(0);
   }
 
-  .global-nav a:not(.logo) {
+  .global-nav > a:not(.logo) {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
@@ -1450,11 +1450,11 @@ address {
     content: none;
   }
 
-  .global-nav a:not(.logo):first-child {
+  .global-nav > a:not(.logo):first-child {
     border-top: 1px solid var(--line);
   }
 
-  .global-nav a:not(.logo) > span {
+  .global-nav > a:not(.logo) > span {
     font-weight: 400;
     font-size: clamp(28px, 7.4vw, 39px);
     line-height: 1;
@@ -1490,6 +1490,7 @@ address {
   }
 
   .instagram-icon {
+    display: block;
     position: relative;
     width: 32px;
     height: 32px;
@@ -1515,6 +1516,11 @@ address {
     width: 4px;
     height: 4px;
     background: var(--ink);
+  }
+
+  .drawer-instagram {
+    display: block;
+    justify-self: end;
   }
   .copyright{
     font-size: 13px;
