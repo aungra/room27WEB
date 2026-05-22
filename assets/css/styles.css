@@ -513,7 +513,7 @@ html.splash-skipped body.splash-on { overflow: auto; }
   margin: 0 0 22px;
   text-align: center;
   line-height: 1.4;
-  font-size: clamp(12px, .95vw, 14px);
+  font-size: clamp(14px, 1.08vw, 16px);
   font-weight: 300;
   text-shadow: 0 0 5px rgba(255,255,255,0.2);
   transform: translateY(-6px);
