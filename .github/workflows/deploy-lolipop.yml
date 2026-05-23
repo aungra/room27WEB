@@ -10,6 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       FTP_SERVER: ftp-1.lolipop.jp
       FTP_REMOTE_DIR: /room27/
       FTP_USERNAME: ${{ secrets.LOLIPOP_FTP_USERNAME }}
