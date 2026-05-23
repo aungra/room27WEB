@@ -12,7 +12,7 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       FTP_SERVER: ftp-1.lolipop.jp
-      FTP_REMOTE_DIR: room27/
+      FTP_REMOTE_DIR: .
       FTP_USERNAME: ${{ secrets.LOLIPOP_FTP_USERNAME }}
       FTP_PASSWORD: ${{ secrets.LOLIPOP_FTP_PASSWORD }}
     steps:
@@ -28,8 +28,8 @@ jobs:
           set ftp:ssl-allow no
           set net:max-retries 3
           set net:timeout 30
-          mkdir -p $FTP_REMOTE_DIR
-          mirror --reverse --verbose --delete \
+          pwd
+          mirror --reverse --verbose \
             --exclude-glob .git/ \
             --exclude-glob .git/** \
             --exclude-glob .github/ \
