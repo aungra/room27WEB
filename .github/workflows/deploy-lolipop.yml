@@ -10,24 +10,33 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      FTP_SERVER: ftp-1.lolipop.jp
+      FTP_REMOTE_DIR: /room27/
+      FTP_USERNAME: ${{ secrets.LOLIPOP_FTP_USERNAME }}
+      FTP_PASSWORD: ${{ secrets.LOLIPOP_FTP_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Upload static site
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp-1.lolipop.jp
-          username: ${{ secrets.LOLIPOP_FTP_USERNAME }}
-          password: ${{ secrets.LOLIPOP_FTP_PASSWORD }}
-          server-dir: room27/
-          local-dir: ./
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .github/**
-            HANDOFF.md
-            vercel.json
-            .gitignore
+        run: |
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<'LFTP'
+          set ftp:ssl-allow no
+          set net:max-retries 3
+          set net:timeout 30
+          mirror --reverse --verbose --delete \
+            --exclude-glob .git/ \
+            --exclude-glob .git/** \
+            --exclude-glob .github/ \
+            --exclude-glob .github/** \
+            --exclude-glob node_modules/ \
+            --exclude-glob node_modules/** \
+            --exclude HANDOFF.md \
+            --exclude vercel.json \
+            --exclude .gitignore \
+            ./ /room27/
+          bye
+          LFTP
