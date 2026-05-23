@@ -26,10 +26,14 @@ jobs:
         run: |
           lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<LFTP
           set ftp:ssl-allow no
-          set net:max-retries 3
-          set net:timeout 30
+          set ftp:passive-mode on
+          set ftp:prefer-epsv no
+          set ftp:sync-mode off
+          set net:max-retries 5
+          set net:timeout 60
           pwd
-          mirror --reverse --verbose \
+          cls -la
+          mirror --reverse --verbose=3 --parallel=1 \
             --exclude-glob .git/ \
             --exclude-glob .git/** \
             --exclude-glob .github/ \
@@ -39,6 +43,6 @@ jobs:
             --exclude HANDOFF.md \
             --exclude vercel.json \
             --exclude .gitignore \
-            ./ $FTP_REMOTE_DIR
+            ./ ./
           bye
           LFTP
