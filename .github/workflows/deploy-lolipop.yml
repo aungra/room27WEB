@@ -28,7 +28,10 @@ jobs:
           set ftp:ssl-allow no
           set ftp:passive-mode on
           set ftp:prefer-epsv no
+          set ftp:fix-pasv-address yes
           set ftp:sync-mode off
+          set dns:order inet
+          set net:connection-limit 1
           set net:max-retries 5
           set net:timeout 60
           pwd
