@@ -195,6 +195,19 @@ const desktopCursorQuery = window.matchMedia("(max-width: 0px)");
 const mapBox = document.querySelector(".map-box");
 const mapFrame = document.querySelector(".map-box iframe");
 
+if (mapBox && mapFrame) {
+  const markMapReady = () => {
+    mapBox.classList.add("is-map-ready");
+  };
+
+  mapFrame.addEventListener("load", markMapReady, { once: true });
+  setTimeout(() => {
+    if (!mapBox.classList.contains("is-map-ready")) {
+      markMapReady();
+    }
+  }, 8000);
+}
+
 if (cursorDot && cursorRing && desktopCursorQuery.matches) {
   let targetX = window.innerWidth / 2;
   let targetY = window.innerHeight / 2;

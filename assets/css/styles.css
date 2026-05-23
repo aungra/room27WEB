@@ -141,6 +141,9 @@ select {
   fill: #a7a7a7;
   font-weight: 400;
   font-size: 44px;
+  letter-spacing: 0;
+  font-kerning: normal;
+  text-rendering: geometricPrecision;
   cursor: pointer;
   pointer-events: auto;
   user-select: none;
@@ -1014,17 +1017,42 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 
 .map-box {
+  position: relative;
   display: grid;
   place-items: center;
   margin-top: 34px;
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
+  background: #f4f3ef;
+}
+.map-box::before {
+  content: "Google Map";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(0, 0, 0, .46);
+  font-size: clamp(15px, 1.3vw, 18px);
+  letter-spacing: .16em;
+  background: #f4f3ef;
+  transition: opacity .24s ease, visibility .24s ease;
+}
+.map-box.is-map-ready::before {
+  opacity: 0;
+  visibility: hidden;
 }
 .map-box iframe{
+  position: relative;
+  z-index: 1;
   width: 100%;
   aspect-ratio: 15/6;
   height: auto;
+  opacity: 0;
+  transition: opacity .24s ease;
+}
+.map-box.is-map-ready iframe {
+  opacity: 1;
 }
 .lightbox {
   position: fixed;
