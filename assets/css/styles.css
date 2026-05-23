@@ -829,8 +829,8 @@ html.splash-skipped body.splash-on { overflow: auto; }
 }
 .rental-actions a .window-icon::before{
   content: "";
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   background: url(../img/windo_icon.svg) center no-repeat;
   background-size: contain;
   position: absolute;
