@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FTP_SERVER="${FTP_SERVER:-ftp-1.lolipop.jp}"
-FTP_REMOTE_DIR="${FTP_REMOTE_DIR:-}"
+FTP_REMOTE_DIR="${FTP_REMOTE_DIR:-room27}"
 
 if [[ -f "$ROOT_DIR/.ftp-env" ]]; then
   # shellcheck disable=SC1091
@@ -22,6 +22,7 @@ find . -type f \
   ! -path './.git/*' \
   ! -path './.github/*' \
   ! -path './node_modules/*' \
+  ! -path './scripts/*' \
   ! -name '.DS_Store' \
   ! -name '.gitignore' \
   ! -name '.ftp-env' \
