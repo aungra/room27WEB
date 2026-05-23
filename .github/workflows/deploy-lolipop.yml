@@ -9,6 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,7 +21,7 @@ jobs:
           server: ftp-1.lolipop.jp
           username: ${{ secrets.LOLIPOP_FTP_USERNAME }}
           password: ${{ secrets.LOLIPOP_FTP_PASSWORD }}
-          server-dir: /room27/
+          server-dir: room27/
           local-dir: ./
           exclude: |
             **/.git*
